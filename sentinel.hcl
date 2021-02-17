@@ -35,7 +35,7 @@ policy "check-mandatory-tags" {
 
 policy "check-ec2-instance-type-in-devenv" {
   source = "./check-ec2-instance-type-in-devenv.sentinel"
-  enforcement_level = "adivsory"
+  enforcement_level = "advisory"
 }
 
 //policy "check-budget-module-from-pmr" {
