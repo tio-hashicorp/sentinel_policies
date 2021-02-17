@@ -1,0 +1,47 @@
+# This policy checks for use of the Scheduler Module, this module allows users to
+# schedule automated shutdowns of EC2 instances in the DEV environment.
+
+# Import common-functions/tfplan-functions/tfplan-functions.sentinel
+# with alias "plan"
+import "tfplan-functions" as plan
+import "tfplan/v2" as tfplan
+import "tfconfig/v2" as tfconfig
+import "strings"
+
+### Parameters ###
+# The address of the TFC or TFE server
+param address default "app.terraform.io"
+# The organization on the TFC or TFE server
+param organization
+
+# Check if deployment is in Dev environment.
+checkIfDev = tfplan.variables.Environment.value
+is_environment=plan.to_string(checkIfDev)
+
+if is_environment is "dev" {
+
+    # Get all EC2 instances
+    allEC2Instances = plan.find_resources("aws_instance")
+}
+
+
+# Fnd modules called from root module that are not in the desired PMR
+schedulerModule = filter tfconfig.module_calls as index, mc {
+  mc.module_address is "" and
+   strings.has_prefix(mc.source, address + "/" + organization + "/lambda-scheduler-stop-start/aws")
+}
+
+# Print violation messages for invalid modules
+if length(schedulerModule) > 0 {
+  print("Thank you for using the Scheduler Module!")
+} else {
+  print("Please add Scheduler Module, link here: https://app.terraform.io/app/moayadi/modules/view/lambda-scheduler-stop-start/aws/")
+}
+
+is_schedule_module_in_use = length(schedulerModule) is not 0
+
+# Main rule
+
+main = rule {
+  is_schedule_module_in_use is not false and is_environment is "dev"
+}

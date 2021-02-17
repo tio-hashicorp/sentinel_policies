@@ -1,0 +1,37 @@
+# This policy checks for use of the Budget module for Budget notifications.
+# Notifications are sent to the nominiated Workspace Notifications email adddress.
+
+# This policy uses the tfconfig/v2 import to require that all non-root
+# modules come from the Private Module Registry.
+
+# Import the tfconfig/v2 import, but use the alias "tfconfig"
+import "tfconfig/v2" as tfconfig
+# Standard strings import
+import "strings"
+
+### Parameters ###
+# The address of the TFC or TFE server
+param address default "app.terraform.io"
+# The organization on the TFC or TFE server
+param organization
+
+# Fnd modules called from root module that are not in the desired PMR
+budgetModule = filter tfconfig.module_calls as index, mc {
+  mc.module_address is "" and
+   strings.has_prefix(mc.source, address + "/" + organization + "/workspace-budget/aws")
+}
+
+# Print violation messages for invalid modules
+if length(budgetModule) > 0 {
+  print("Well Done! Thank you for using the Workspace Budget Module!")
+} else {
+  print("Please add a Workspace Budget Module, link here: https://app.terraform.io/app/moayadi/modules/view/workspace-budget/aws/")
+}
+
+
+
+# Main rule
+is_budget_module_in_use = length(budgetModule) is not 0
+main = rule {
+ is_budget_module_in_use is true
+}
