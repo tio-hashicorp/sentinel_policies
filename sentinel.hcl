@@ -38,10 +38,10 @@ policy "check-ec2-instance-type-in-devenv" {
   enforcement_level = "soft-mandatory"
 }
 
-policy "check-budget-module-from-pmr" {
-  source = "./check-budget-module-from-pmr.sentinel"
-  enforcement_level = "soft-mandatory"
-}
+//policy "check-budget-module-from-pmr" {
+//  source = "./check-budget-module-from-pmr.sentinel"
+//  enforcement_level = "soft-mandatory"
+//}
 
 policy "check-scheduler-module-from-pmr" {
   source  = "./check-scheduler-module-from-pmr.sentinel"
