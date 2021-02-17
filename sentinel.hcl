@@ -35,7 +35,7 @@ policy "check-mandatory-tags" {
 
 policy "check-ec2-instance-type-in-devenv" {
   source = "./check-ec2-instance-type-in-devenv.sentinel"
-  enforcement_level = "soft-mandatory"
+  enforcement_level = "adivsory"
 }
 
 //policy "check-budget-module-from-pmr" {
@@ -50,7 +50,7 @@ policy "check-scheduler-module-from-pmr" {
 
 policy "check-cost-by-workspace-name" {
   source  = "./check-cost-by-workspace-name.sentinel"
-  enforcement_level = "soft-mandatory"
+  enforcement_level = "advisory"
 }
 
 
