@@ -22,6 +22,11 @@ module "tags-exceptions" {
   source = "./aws-functions/tags-exceptions.sentinel"
 }
 
+policy "check-ami-ids" {
+  source = "./allowed-amis.sentinel"
+  enforcement_level = "advisory"
+}
+
 policy "check-mandatory-tags" {
   source = "./check-mandatory-tags.sentinel"
   enforcement_level = "soft-mandatory"
