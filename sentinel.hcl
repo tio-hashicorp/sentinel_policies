@@ -22,21 +22,23 @@ module "tags-exceptions" {
   source = "./aws-functions/tags-exceptions.sentinel"
 }
 
-policy "check-ami-ids" {
-  source = "./allowed-amis.sentinel"
+policy "restrict-ec2-amis" {
+  source = "./restrict-ec2-amis.sentinel"
   enforcement_level = "advisory"
 }
 
+
+/*
 policy "check-mandatory-tags" {
   source = "./check-mandatory-tags.sentinel"
   enforcement_level = "soft-mandatory"
 }
 
 
-// policy "restrict-db-instance-engines" {
-//   source = "./restrict-db-instance-engines.sentinel"
-//   enforcement_level = "advisory"
-// }
+ policy "restrict-db-instance-engines" {
+   source = "./restrict-db-instance-engines.sentinel"
+   enforcement_level = "advisory"
+ }
 
 policy "check-ec2-instance-type-in-devenv" {
   source = "./check-ec2-instance-type-in-devenv.sentinel"
@@ -48,12 +50,13 @@ policy "check-cost-by-workspace-name" {
   enforcement_level = "advisory"
 }
 
-//policy "check-budget-module-from-pmr" {
-//  source = "./check-budget-module-from-pmr.sentinel"
-//  enforcement_level = "soft-mandatory"
-//}
+policy "check-budget-module-from-pmr" {
+  source = "./check-budget-module-from-pmr.sentinel"
+  enforcement_level = "soft-mandatory"
+}
 
-//policy "check-scheduler-module-from-pmr" {
-//  source  = "./check-scheduler-module-from-pmr.sentinel"
-//  enforcement_level = "advisory"
-//}
+policy "check-scheduler-module-from-pmr" {
+  source  = "./check-scheduler-module-from-pmr.sentinel"
+  enforcement_level = "advisory"
+}
+*/

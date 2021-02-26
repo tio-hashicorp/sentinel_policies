@@ -1,0 +1,135 @@
+import "strings"
+
+providers = {
+	"aws": {
+		"alias": "",
+		"config": {
+			"region": {
+				"constant_value": "us-east-2",
+			},
+		},
+		"module_address":      "",
+		"name":                "aws",
+		"provider_config_key": "aws",
+		"version_constraint":  "",
+	},
+}
+
+resources = {
+	"aws_instance.app": {
+		"address": "aws_instance.app",
+		"config": {
+			"ami": {
+				"constant_value": "ami-0c55b159cbfafe1f0",
+			},
+			"availability_zone": {
+				"constant_value": "us-east-2a",
+			},
+			"instance_type": {
+				"constant_value": "t2.micro",
+			},
+			"subnet_id": {
+				"references": [
+					"aws_subnet.mysubnet",
+				],
+			},
+		},
+		"count":               {},
+		"depends_on":          [],
+		"for_each":            {},
+		"mode":                "managed",
+		"module_address":      "",
+		"name":                "app",
+		"provider_config_key": "aws",
+		"provisioners":        [],
+		"type":                "aws_instance",
+	},
+	"aws_subnet.mysubnet": {
+		"address": "aws_subnet.mysubnet",
+		"config": {
+			"availability_zone": {
+				"constant_value": "us-east-2a",
+			},
+			"cidr_block": {
+				"constant_value": "172.16.10.0/24",
+			},
+			"tags": {
+				"constant_value": {
+					"Name": "tf-example",
+				},
+			},
+			"vpc_id": {
+				"references": [
+					"aws_vpc.hashicat[1]",
+				],
+			},
+		},
+		"count":               {},
+		"depends_on":          [],
+		"for_each":            {},
+		"mode":                "managed",
+		"module_address":      "",
+		"name":                "mysubnet",
+		"provider_config_key": "aws",
+		"provisioners":        [],
+		"type":                "aws_subnet",
+	},
+	"aws_vpc.hashicat": {
+		"address": "aws_vpc.hashicat",
+		"config": {
+			"cidr_block": {
+				"references": [
+					"var.cidrs",
+					"count.index",
+				],
+			},
+			"enable_dns_hostnames": {
+				"constant_value": true,
+			},
+			"tags": {
+				"references": [
+					"count.index",
+					"count.index",
+				],
+			},
+		},
+		"count": {
+			"constant_value": 2,
+		},
+		"depends_on":          [],
+		"for_each":            {},
+		"mode":                "managed",
+		"module_address":      "",
+		"name":                "hashicat",
+		"provider_config_key": "aws",
+		"provisioners":        [],
+		"type":                "aws_vpc",
+	},
+}
+
+provisioners = {}
+
+variables = {
+	"cidrs": {
+		"default": [
+			"172.31.0.0/16",
+			"172.16.0.0/16",
+		],
+		"description":    "",
+		"module_address": "",
+		"name":           "cidrs",
+	},
+}
+
+outputs = {}
+
+module_calls = {}
+
+strip_index = func(addr) {
+	s = strings.split(addr, ".")
+	for s as i, v {
+		s[i] = strings.split(v, "[")[0]
+	}
+
+	return strings.join(s, ".")
+}

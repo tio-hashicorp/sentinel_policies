@@ -1,0 +1,28 @@
+{
+	"records": [
+		{
+			"key": "test/restrict-ec2-amis/fail/tfplan-functions",
+			"source": "../../common-functions/tfplan-functions/tfplan-functions.sentinel",
+			"sourceSum": "",
+			"dest": "/Users/tio/mydemo/terraform/tio-hashicorp/sentinel_policies/common-functions/tfplan-functions/tfplan-functions.sentinel"
+		},
+		{
+			"key": "test/restrict-ec2-amis/pass/tfplan-functions",
+			"source": "../../common-functions/tfplan-functions/tfplan-functions.sentinel",
+			"sourceSum": "",
+			"dest": "/Users/tio/mydemo/terraform/tio-hashicorp/sentinel_policies/common-functions/tfplan-functions/tfplan-functions.sentinel"
+		},
+		{
+			"key": "test/restrict-ec2-instance-type/fail/tfplan-functions",
+			"source": "../../common-functions/tfplan-functions/tfplan-functions.sentinel",
+			"sourceSum": "",
+			"dest": "/Users/tio/mydemo/terraform/tio-hashicorp/sentinel_policies/common-functions/tfplan-functions/tfplan-functions.sentinel"
+		},
+		{
+			"key": "test/restrict-ec2-instance-type/pass/tfplan-functions",
+			"source": "../../common-functions/tfplan-functions/tfplan-functions.sentinel",
+			"sourceSum": "",
+			"dest": "/Users/tio/mydemo/terraform/tio-hashicorp/sentinel_policies/common-functions/tfplan-functions/tfplan-functions.sentinel"
+		}
+	]
+}

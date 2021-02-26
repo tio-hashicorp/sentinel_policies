@@ -1,0 +1,129 @@
+import "strings"
+import "types"
+
+_modules = {
+	"root": {
+		"data":    {},
+		"modules": {},
+		"outputs": {},
+		"providers": {
+			"aws": {
+				"alias": {
+					"": {
+						"config": {
+							"region": "us-east-2",
+						},
+						"references": {
+							"region": [],
+						},
+						"version": "",
+					},
+				},
+				"config": {
+					"region": "us-east-2",
+				},
+				"references": {
+					"region": [],
+				},
+				"version": "",
+			},
+		},
+		"resources": {
+			"aws_instance": {
+				"app": {
+					"config": {
+						"ami":               "ami-0c55b159cbfafe1f0",
+						"availability_zone": "us-east-2a",
+						"instance_type":     "t2.micro",
+					},
+					"provisioners": null,
+					"references": {
+						"ami":               [],
+						"availability_zone": [],
+						"instance_type":     [],
+						"subnet_id": [
+							"aws_subnet.mysubnet",
+						],
+					},
+				},
+			},
+			"aws_subnet": {
+				"mysubnet": {
+					"config": {
+						"availability_zone": "us-east-2a",
+						"cidr_block":        "172.16.10.0/24",
+						"tags": {
+							"Name": "tf-example",
+						},
+					},
+					"provisioners": null,
+					"references": {
+						"availability_zone": [],
+						"cidr_block":        [],
+						"tags":              [],
+						"vpc_id": [
+							"aws_vpc.hashicat[1]",
+						],
+					},
+				},
+			},
+			"aws_vpc": {
+				"hashicat": {
+					"config": {
+						"enable_dns_hostnames": true,
+					},
+					"provisioners": null,
+					"references": {
+						"cidr_block": [
+							"var.cidrs",
+							"count.index",
+						],
+						"enable_dns_hostnames": [],
+						"tags": [
+							"count.index",
+							"count.index",
+						],
+					},
+				},
+			},
+		},
+		"variables": {
+			"cidrs": {
+				"default": [
+					"172.31.0.0/16",
+					"172.16.0.0/16",
+				],
+				"description": "",
+			},
+		},
+	},
+}
+
+module_paths = [
+	[],
+]
+
+module = func(path) {
+	if types.type_of(path) is not "list" {
+		error("expected list, got", types.type_of(path))
+	}
+
+	if length(path) < 1 {
+		return _modules.root
+	}
+
+	addr = []
+	for path as p {
+		append(addr, "module")
+		append(addr, p)
+	}
+
+	return _modules[strings.join(addr, ".")]
+}
+
+data = _modules.root.data
+modules = _modules.root.modules
+providers = _modules.root.providers
+resources = _modules.root.resources
+variables = _modules.root.variables
+outputs = _modules.root.outputs

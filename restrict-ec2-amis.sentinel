@@ -1,0 +1,12 @@
+import "tfplan-functions" as plan
+forbidden_amis = ["ami-0c55b159cbfafe1f0", "ami-0c55b159cbfafe1f9"]
+
+allEC2Instances = plan.find_resources("aws_instance")
+
+violatingEC2Instances = plan.filter_attribute_in_list(
+   allEC2Instances, "ami", forbidden_amis, true)
+
+
+main = rule {
+  length(violatingEC2Instances["messages"]) is 0
+}
