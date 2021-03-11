@@ -10,8 +10,6 @@ import "tfplan-functions" as plan
 import "tfplan/v2" as tfplan
 
 
-# Allowed EC2 Instance Types
-# Include "null" to allow missing or computed values
 #allowed_types = ["t2.small", "t2.medium", "t2.large"]
 
 # Get all EC2 instances
@@ -25,7 +23,7 @@ checkIfDev = tfplan.variables.Environment.value
 
 is_environment=plan.to_string(checkIfDev)
 
-violatingEC2Instances = plan.filter_attribute_does_not_match_regex(allEC2Instances, "instance_type", "^[tm][235].[^\\d].*", true)
+violatingEC2Instances = plan.filter_attribute_does_not_match_regex(allEC2Instances, "instance_type", "^[tm][235].[^\d].*", true)
 
 # violatingEC2Instances = plan.filter_attribute_not_in_list(allEC2Instances,
 #                         "instance_type", allowed_types, true)
