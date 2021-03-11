@@ -27,23 +27,21 @@ policy "restrict-ec2-amis" {
   enforcement_level = "advisory"
 }
 
-
-/*
 policy "check-mandatory-tags" {
   source = "./check-mandatory-tags.sentinel"
   enforcement_level = "soft-mandatory"
 }
 
-
- policy "restrict-db-instance-engines" {
-   source = "./restrict-db-instance-engines.sentinel"
-   enforcement_level = "advisory"
- }
-
 policy "check-ec2-instance-type-in-devenv" {
   source = "./check-ec2-instance-type-in-devenv.sentinel"
   enforcement_level = "advisory"
 }
+
+/*
+policy "restrict-db-instance-engines" {
+   source = "./restrict-db-instance-engines.sentinel"
+   enforcement_level = "advisory"
+ }
 
 policy "check-cost-by-workspace-name" {
   source  = "./check-cost-by-workspace-name.sentinel"
