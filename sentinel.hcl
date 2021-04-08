@@ -22,8 +22,8 @@ module "tags-exceptions" {
   source = "./aws-functions/tags-exceptions.sentinel"
 }
 
-policy "restrict-ec2-amis" {
-  source = "./restrict-ec2-amis.sentinel"
+policy "restrict-amis" {
+  source = "./restrict-amis.sentinel"
   enforcement_level = "advisory"
 }
 
@@ -32,17 +32,18 @@ policy "check-mandatory-tags" {
   enforcement_level = "soft-mandatory"
 }
 
-policy "check-ec2-instance-type-in-devenv" {
-  source = "./check-ec2-instance-type-in-devenv.sentinel"
-  enforcement_level = "advisory"
-}
-
 policy "check-cost-by-workspace-name" {
   source  = "./check-cost-by-workspace-name.sentinel"
   enforcement_level = "soft-mandatory"
 }
 
 /*
+policy "check-instance-type-in-devenv" {
+  source = "./check-instance-type-in-devenv.sentinel"
+  enforcement_level = "advisory"
+}
+
+
 policy "restrict-db-instance-engines" {
    source = "./restrict-db-instance-engines.sentinel"
    enforcement_level = "advisory"
