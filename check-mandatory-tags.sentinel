@@ -1,35 +1,50 @@
-# This Policy checks that all mandetory Tags are in the Terraform Configuration,
+# This Policy checks that all mandetory Tags are in the Terraform Configuration, 
 # These Tags are ["Environment", "Project", "Team", "CostCenter", "Workspace"]
 
 # This policy uses the Sentinel tfplan/v2 import to require that
-# all AWS resources that use standard AWS tags have all mandatory tags
+# all Cloud resources have all mandatory tags
 
 # Import common-functions/tfplan-functions/tfplan-functions.sentinel
 # with alias "plan"
 import "tfplan-functions" as plan
-
-# Import aws-functions/aws-functions.sentinel
-# with alias "aws"
 import "aws-functions" as aws
+import "azure-functions" as azure
 
-# List of mandatory tags
-mandatory_tags_all_resources = ["Environment", "Project", "Team", "CostCenter", "Workspace"]
-# mandatory_tags_ec2_resources = ["Environment", "Project", "Team", "CostCenter", "Workspace", "tostop"]
-# mandatory_tags_rds_resources = ["Environment", "Project", "Team", "CostCenter", "Workspace", "tostop"]
+mandatory_tags = ["CostCenter", "Project"]
 
-# Get all AWS Resources with standard tags
-allAWSResourcesWithStandardTags = aws.find_resources_with_standard_tags()
-# allAWSEC2Resources = plan.find_resources("aws_instance")
 
-# Filter to AWS resources with violations
+param aws_resource_types default [
+  "aws_s3_bucket",
+  "aws_instance",
+]
+
+param azure_resource_types default [
+  "azurerm_resource_group",
+  "azurerm_virtual_machine",
+  "azurerm_linux_virtual_machine",
+  "azurerm_windows_virtual_machine",
+  "azurerm_virtual_network",
+]
+
+# Get all resources with standard tags
+
+allAZResourcesWithStandardTags = azure.find_resources_with_standard_tags(azure_resource_types) 
+allAWSResourcesWithStandardTags = aws.find_resources_with_standard_tags(aws_resource_types) 
+
+# Filter resources with violations
 # Warnings will be printed for all violations since the last parameter is true
-violatingAWSResources = plan.filter_attribute_not_contains_list(allAWSResourcesWithStandardTags,
-                        "tags", mandatory_tags_all_resources, true)
 
-# violatingAWSEC2Resources = plan.filter_attribute_not_contains_list(allAWSEC2Resources,
-# "tags", mandatory_tags_ec2_resources, true)
+violatingAZResources = plan.filter_attribute_not_contains_list(
+	allAZResourcesWithStandardTags,
+        "tags", 
+	mandatory_tags, true)
 
-# Main rule
+violatingAWSResources = plan.filter_attribute_not_contains_list(
+	allAWSResourcesWithStandardTags,
+        "tags", 
+	mandatory_tags, true)
+
 main = rule {
+  length(violatingAZResources["messages"]) is 0
   length(violatingAWSResources["messages"]) is 0
 }
